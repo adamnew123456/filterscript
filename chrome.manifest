@@ -1,0 +1,5 @@
+content     filterscript    chrome/content/
+resource    filterscript    modules/
+
+overlay chrome://messenger/content/FilterEditor.xul chrome://filterscript/content/fsFilterEditor.xul
+overlay chrome://messenger/content/mailWindowOverlay.xul chrome://filterscript/content/fsMessenger.xul

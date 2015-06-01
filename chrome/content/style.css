@@ -1,0 +1,9 @@
+@import url("chrome://global/skin");
+
+/*
+ * Ensure that the filter UI doesn't take any extra parameters (in the form of
+ * buttons, text entries, etc).
+ */
+.ruleactiontarget[type="adamnew123456#fsRunScript"] {
+  -moz-binding: url("chrome://messenger/content/searchWidgets.xml#ruleactiontarget-base");
+}

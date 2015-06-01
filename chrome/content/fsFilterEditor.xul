@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://filterscript/content/style.css"
+                 type="text/css"?>
+
+<!--
+    This file only exists to ensure that the filter's UI is setup properly -
+    the ".ruleactiontarget" selector in style.css describes the type of filter
+    that "adamnew123456#fsRunScript" should be.
+-->
+
+<overlay id="fsFilterEditor"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+</overlay>

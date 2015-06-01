@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<overlay id="fsMessenger"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript" src="chrome://filterscript/content/fsMessenger.js"/>
+
+  <!--
+    The "FilterScript" menu that appears on the main window.
+  -->
+  <menubar id="mail-menubar">
+    <menu id="menu_FilterScript" label="FilterScript" insertbefore="tasksMenu">
+        <menupopup id="menu_FilterScriptPopup">
+            <menuitem id="menu_FilterScript_settings" label="Settings" oncommand="openSettings();" />
+        </menupopup>
+    </menu>
+  </menubar>
+</overlay>

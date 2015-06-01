@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://filterscript/content/style.css"
+                 type="text/css"?>
+
+<!--
+    This describes the preferences dialog, which consists of a single entry.
+
+    +=================================+
+    | Script Path: |_________| |Open| |
+    |                                 |
+    |                    |OK| |Cancel||
+    +=================================+
+-->
+
+<dialog id="fsPrefs"
+        title="FilterScript Preferences"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        onload="onLoad();"
+        ondialogaccept="return onAccept();">
+
+  <script type="application/x-javascript" src="chrome://filterscript/content/fsPreferences.js"/>
+
+  <popupset>
+    <tooltip id="prefs.script.tooltip">
+      <description>The path to the filter script file.</description>
+    </tooltip>
+    <tooltip id="prefs.script.open.tooltip">
+      <description>Open up a dialog to choose the script file.</description>
+    </tooltip>
+  </popupset>
+
+  <vbox id="prefs.box" flex="1">
+    <hbox>
+      <label id="prefs.label.1" value="Script Path:" />
+      <textbox id="prefs.script" size="60" tooltip="prefs.script.tooltip" />
+      <button id="prefs.script.open" label="Open..." tooltip="prefs.script.open.tooltip"
+              oncommand="openScriptDialog();" />
+    </hbox>
+  </vbox>
+</dialog>
