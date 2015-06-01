@@ -18,7 +18,7 @@ a fie called `filterscript@adam.marchetti.xpi`. You should be able to install
 this by dragging and dropping this file into the *Thunderbird Add-ons Manager*.
 
 Note that if you have a more recent version than 42, you will need to change the
-version string in `install.rdf`. Look for the line:
+version string in `extension/install.rdf`. Look for the line:
     
     <em:maxVersion>42.*<em:maxVersion>
 
