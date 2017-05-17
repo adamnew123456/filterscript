@@ -22,20 +22,27 @@ window.addEventListener("load", function() {
         value: "runscript",
 
         /**
-         * Finds the first message header associated with a plain text body,
-         * and passes the body content onto the filter script.
+         * Passes the whole of the message, in RFC822 format, into the
+         * filter.
          */
         apply: function (headers, action, listener, type, messageWindow) {
-            var found_body = false;
             for (var i=0; i < headers.length; i++) {
                 var header = headers.queryElementAt(i, Components.interfaces.nsIMsgDBHdr);
+                var header_uri = header.folder.getUriForMsg(header);
 
-                MsgHdrToMimeMessage(header, null, function(header, message) {
-                    if (!found_body && message.coerceBodyToPlaintext) {
-                        found_body = true;
-                        FilterScript.runFilter(message.coerceBodyToPlaintext());
-                    }
-                }, true);
+                var messenger = Components.classes["@mozilla.org/messenger;1"
+                                ].createInstance(Components.interfaces.nsIMessenger);
+                var message_svc = messenger.messageServiceFromURI(header_uri);
+                var message_stream = Components.classes["@mozilla.org/network/sync-stream-listener;1"
+                                     ].createInstance();
+                var message_stream_if = message_stream.QueryInterface(Components.interfaces.nsIInputStream);
+                var script_stream = Components.classes["@mozilla.org/scriptableinputstream;1"
+                                    ].createInstance();
+                var script_stream_if = script_stream.QueryInterface(Components.interfaces.nsIScriptableInputStream);
+
+                script_stream_if.init(message_stream_if);
+                message_svc.streamMessage(header_uri, message_stream, messageWindow, null, false, null);
+                FilterScript.runFilter(script_stream_if);
             }
         },
 

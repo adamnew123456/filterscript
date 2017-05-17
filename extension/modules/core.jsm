@@ -15,7 +15,7 @@ var SCRIPT_PREF = 'script';
 /**
  * Writes the contents of a string to an nsILocalFile object.
  */
-function writeFile(file, data) {
+function writeFile(file, input_stream) {
     var tmpStream = Components.classes["@mozilla.org/network/file-output-stream;1"
                         ].createInstance(Components.interfaces.nsIFileOutputStream);
 
@@ -25,7 +25,12 @@ function writeFile(file, data) {
     var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"
                     ].createInstance(Components.interfaces.nsIConverterOutputStream);
     converter.init(tmpStream, "UTF-8", 0, 0);
-    converter.writeString(data);
+
+    var chunk_size = 1024;
+    while (input_stream.available()) {
+        converter.writeString(input_stream.read(chunk_size));
+    }
+
     converter.close();
 }
 
@@ -62,7 +67,7 @@ FilterScript = {
     /**
      * Runs the filter program over the given message body.
      */
-    runFilter: function(body) {
+    runFilter: function(input_stream) {
         dump("filterscript: Retrieving script path\n");
 
         var program = this.getFilterScript();
@@ -74,20 +79,17 @@ FilterScript = {
         //
         // Unfortunately, we can't easily shove data to the subprocess's
         // standard input - rather, we have to create a temporary file.
-        dump("filterscript: Writing data (" + body.length + " chars) to temporary file\n");
+        dump("filterscript: Writing data to temporary file\n");
 
         var tmpFile = Components.classes["@mozilla.org/file/local;1"
                         ].createInstance(Components.interfaces.nsILocalFile);
 
-        // This is an abysmal way to create a temporary file - there really 
-        // should be a mktemp(), rather than this (which is vulnerable to
-        // timing attacks)
         tmpFile.initWithPath("/tmp/mail.tmp");
         tmpFile.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE,
                              FileUtils.PERMS_FILE);
 
         dump("filterscript: Saving message body to " + tmpFile.path + "\n");
-        writeFile(tmpFile, body);
+        writeFile(tmpFile, input_stream);
 
         var process = Components.classes["@mozilla.org/process/util;1"
                         ].createInstance(Components.interfaces.nsIProcess);
