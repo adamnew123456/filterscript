@@ -56,9 +56,10 @@ One of the simplest filter scripts looks like this (in Bourne Shell):
 This illustrates a couple of features about the way that FilterScripts calls
 your script:
 
-1. Only the message body is passed to the script (I was initially hoping to get
-   the full headers, and all the bodies in RFC 2822 format - if somebody knows
-   how to do this, please let me know!)
+1. The full MIME headers of the message are dumped. This makes it possible to
+   get all information about the message (including attachments, via the multipart
+   MIME type), but it means that scripts should probably be written in a language
+   that has good support for MIME email.
 2. The message body is stored in a temporary file, given as the first command
    line argument (hence the `$1`). Note that FilterScripts will delete the
    temporary file for you, so there is no need to remove it in your script.
@@ -69,9 +70,10 @@ In addition, a few further caveats are worth noting:
   arbitrary - if it is important to access the directory the script is
   accessed in, your script will have to determine where that is and
   `cd` itself.
-- The standard output and standard error of your script are effectively
-  discarded (Thunderbird may do something with them - but I don't know
-  what that is).
+- The standard output and standard error will end upon the console that
+  Thunderbird is attached to. Under most circumstances, this will be
+  `/dev/null` since desktop environments tend to throw away the console
+  output of programs launched via graphical menus.
 
 ## License
 
@@ -82,3 +84,6 @@ To be of the most use possible, I am releasing this under the CC0 license.
 Big thanks to the authors on MDN, and the authors of Enigmail, which was a
 helpful reference for some of the under-documented parts of the Thunderbird 
 API.
+
+In addition, thanks to GitHub user mic-rigaud for pointing me to unfamiliar
+parts of the Thunderbird API that helped in solving bug #1.
